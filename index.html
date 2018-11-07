@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Clinician Dashboard Page</title>
+    <!-- 	<script src="http://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.3.3/dist/interact.min.js"></script>
+    <!-- Thumbnail -->
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
+    <script type="text/javascript" src="../dashboard-js/drag.js"></script>
+    <script type="text/javascript" src="../dashboard-js/submitData.js"></script>
+    <script type="text/javascript" src="../dashboard-js/font.js"></script>
+    <script type="text/javascript" src="../dashboard-js/colour.js"></script>
+    <script type="text/javascript" src="../dashboard-js/data.js"></script>
+    <script type="text/javascript" src="../dashboard-js/resize.js"></script>
+    <script type="text/javascript" src="../dashboard-js/clock.js"></script>
+    <script type="text/javascript" src="../dashboard-js/uploadelements.js"></script>
+    <script type="text/javascript" src="../dashboard-js/savePreset.js"></script>
+    <script type="text/javascript" src="../dashboard-js/uploadoriginalelements.js"></script>
+    <!-- <script type="text/javascript" src="../js/dashboard-functions.js"></script> -->
+    <script type="text/javascript" src="../dashboard-js/checkIfWidgetDataExists.js"></script>
+    <script type="text/javascript" src="../dashboard-js/loadPresetWidgets.js"></script>
+
+
+    <!--Previous year (2017)-->
+    <!-- <script src="/global_js/json-handler.js"></script> -->
+
+    <style type="text/css">
+        .panel {
+            margin: 5px;
+        }
+
+        .navbar-default {
+            background-color: rebeccapurple;
+            border-bottom: 4px solid black;
+            /*border-radius: 0px;*/
+        }
+
+        body {
+            margin: 0px;
+            /*overflow-y:hidden;*/
+            overflow-x: hidden;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+        }
+
+        input[type=color] {
+            height: 30px;
+            width: 40%;
+            padding: 0;
+        }
+
+        .dropzone {
+            background-color: #ccc;
+            z-index: 9999;
+            /*border: dashed 4px transparent;*/
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .drop-active {
+            border-color: #aaa;
+        }
+
+        .drop-target {
+            background-color: #29e;
+            border-color: #fff;
+            border-style: solid;
+        }
+
+        .drag-drop {
+            -webkit-transform: translate(0px, 0px);
+            transform: translate(0px, 0px);
+            transition: background-color 0.3s;
+        }
+    </style>
+
+    <!--Initialise JSON Handler : Previous year (2017)-->
+    <!-- <script>jh_init();</script> -->
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+
+                <a class="navbar-brand" href="#" style="color: #fff">Dashboard
+                    <!--  <img alt="NHS" src="http://maxpixel.freegreatpicture.com/static/photo/1x/Physician-Md-Doctor-Clinician-Medical-Practitioner-1639328.png" height="40px" width="40px"> -->
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="navbar-form navbar-right">
+                    <!-- <button type="button" class="btn btn-primary" onclick="goHome()">Home</button> -->
+
+                    <!-- <button type="submit" class="btn btn-info" onclick="preview()" >Preview</button> -->
+                    <button type="button" onclick="preview()" class="btn btn-info" data-toggle="modal" data-target="#myModal">Preview</button>
+                    <!-- <button type="submit" id="submitData" class="btn btn-success" value='' onclick="submitData(this.value)">Submit</button> -->
+                </div>
+                <!-- 			    <button type="button" class="btn btn-primary" onclick="center()">Center</button>
+                            <button type="button" class="btn btn-primary" onclick="left()">Left</button>
+                            <button type="button" class="btn btn-primary" onclick="right()">Right</button> -->
+                <!-- <button type="button" class="btn btn-info navbar-right" onclick="preview()">Preview</button> -->
+                <!-- <button type="button" class="btn btn-primary navbar-right" onclick="submitData()">Submit</button> -->
+
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+
+    <!-- col-md-4 -->
+    <div class="dragAndDropContainer" style="width: 100%; float: left;padding:5px;">
+        <div style="height: 100vh; width: 20%;float: left;">
+            <h3 style="text-align: center;width: 100%; padding: 10px; background-color: #286090;color:#fff;border-top-right-radius: 9px;border-top-left-radius: 9px;">Widget
+                Panel</h3>
+            <!--   			<a class="list-group-item active widgetPanel" style="text-align:center;" id="widgetPanel">Widgets available</a> -->
+
+            <div class="widgetPanel" style="overflow-y: scroll; height:100%;">
+                <div id="welcomeText" class="draggable drag-drop  panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Welcome Text</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Good Morning ...</p>
+                    </div>
+                </div>
+
+                <div id="clock" class="draggable drag-drop  panel panel-default" style="background-color: lightblue;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Clock</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Analog Clock</p>
+                    </div>
+                </div>
+
+                <div id="digitalClock" class="draggable drag-drop  panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Digital Clock</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Digital Clock</p>
+                    </div>
+                </div>
+
+                <div id="timelineWidget" class="draggable drag-drop panel panel-default" style="transition: all;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Timeline Widget</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Timeline Data will be loaded</p>
+                    </div>
+                </div>
+
+                <div id="conditionWidget" class="draggable drag-drop panel panel-default" style="transition: all;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Condition Widget</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Condition Data will be loaded</p>
+                    </div>
+                </div>
+
+                <div id="locationWidget" class="draggable drag-drop panel panel-default" style="transition: all;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Location Widget</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Location Data will be loaded</p>
+                    </div>
+                </div>
+
+                <div id="teamWidget" class="draggable drag-drop panel panel-default" style="transition: all;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Team Widget</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Team Data will be loaded</p>
+                    </div>
+                </div>
+
+                <div id="notification" class="draggable drag-drop  panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Notification</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h3 href="#">Notification <span class="badge">2</span></h3>
+                    </div>
+                </div>
+
+                <!-- timlineButton -->
+                <div id="timelineButton" class="draggable drag-drop  panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Timeline Button</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p href="#">Redirect to timeline page</p>
+                        <button type="button" class="btn btn-primary">Timeline</button>
+                    </div>
+                </div>
+
+                <div id="conditionButton" class="draggable drag-drop  panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Condition Button</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p href="#">Redirect to Condition page</p>
+                        <button type="button" class="btn btn-primary">Condition</button>
+                    </div>
+                </div>
+
+                <div id="locationButton" class="draggable drag-drop  panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Location Button</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p href="#">Redirect to Location page</p>
+                        <button type="button" class="btn btn-primary">Location</button>
+                    </div>
+                </div>
+
+                <div id="teamButton" class="draggable drag-drop  panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Team Button</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p href="#">Redirect to Team page</p>
+                        <button type="button" class="btn btn-primary">Team</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- Patient -->
+        <div class="patientView " style=" width: 65%;float: left;">
+            <div class="patient_navbar" style="text-align: center;">
+                <span class="button-checkbox">
+                    <button type="button" class="btn" data-color="primary" id="homeNavButton">Home</button>
+                    <input type="checkbox" class="hidden" checked />
+                </span>
+                <span class="button-checkbox">
+                    <button type="button" class="btn" data-color="primary" id="conditionNavButton">Condition</button>
+                    <input type="checkbox" class="hidden" id="conditionCheckBox" />
+                </span>
+                <span class="button-checkbox">
+                    <button type="button" class="btn" data-color="primary" id="timelineNavButton">Timeline</button>
+                    <input type="checkbox" class="hidden" id="timelineCheckBox" />
+                </span>
+                <span class="button-checkbox">
+                    <button type="button" class="btn" data-color="primary" id="teamNavButton">Team</button>
+                    <input type="checkbox" class="hidden" id="teamCheckBox" />
+                </span>
+                <span class="button-checkbox">
+                    <button type="button" class="btn" data-color="primary" id="locationNavButton">Location</button>
+                    <input type="checkbox" class="hidden" id="locationCheckBox" />
+                </span>
+                <span class="button-checkbox">
+                    <button type="button" class="btn" data-color="primary" id="logoutNavButton">Logout</button>
+                    <input type="checkbox" class="hidden" checked />
+                </span>
+            </div>
+
+            <!-- DROPZONE -->
+            <div id="inner-dropzone" class="dropzone" style="margin:2px;height: 50vh;">
+
+            </div>
+        </div>
+        <!-- Setting  Section -->
+
+        <div style="height: 100vh;width:15%; float: left;">
+            <h3 style="text-align: center;width: 100%; padding: 10px; background-color: #286090;color:#fff;border-top-right-radius: 9px;border-top-left-radius: 9px;">Settings</h3>
+            <div style="margin: 20px;text-align: center;">
+                <!-- <h2 style="text-align: center">Settings</h2> -->
+                <!-- <hr style="border-top: 1px solid #fff;"> -->
+                <!-- Single button -->
+                <h4>Font Size:</h4>
+                <select id="fontDropDown" onchange="" style="padding: 5px;width: 100%;">
+                </select>
+                <div class="navbar-form">
+                    <button type="button" onclick="setFont()" class="btn btn-info" data-toggle="modal" data-target="#fontPreviewModal">Font
+                        Preview</button>
+                </div>
+                <h3 style="">Page Colours</h3>
+                <h4>Home</h4>
+                <select id="colourBase" onchange="setHomeColour();" class="colourChange" style="border-radius: 3px; padding:5px;width: 100%;">
+
+                </select>
+
+                <h4>Condition</h4>
+                <select id="colourCondition" onchange="setConditionColour();" class="colourChange" style="border-radius: 3px; padding:5px;width: 100%;">
+
+                </select>
+
+                <h4>Timeline</h4>
+                <select id="colourTimeline" onchange="setTimelineColour();" class="colourChange" style="border-radius: 3px; padding:5px;width: 100%;">
+
+                </select>
+                <h4>Team</h4>
+                <select id="colourTeam" onchange="setTeamColour();" class="colourChange" style="border-radius: 3px; padding:5px;width: 100%;">
+
+                </select>
+                <h4>Location</h4>
+                <select id="colourLocation" onchange="setLocationColour();" class="colourChange" style="border-radius: 3px; padding:5px;width: 100%;">
+
+                </select>
+                <!--<h4>Scroll Bar:</h4>-->
+
+                <!--<select id="scrollBar" style="padding: 5px;">-->
+                <!--<option value="0">No</option>-->
+                <!--<option value="1">Yes</option>-->
+                <!--</select>-->
+                <!--<h4>Accessibility Bar:</h4>-->
+
+                <!--<select id="accessibilityBar" style="padding: 5px;">-->
+                <!--<option value="0">No</option>-->
+                <!--<option value="1">Yes</option>-->
+                <!--</select>-->
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Preview</h4>
+                </div>
+                <div class="modal-body" id="modalCanvasContainer">
+                    <!--CANVAS goes here-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">Save Preset</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:50%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Preview</h4>
+                </div>
+                <div class="modal-body" id="" style="padding: 25px;">
+                    <input type="text" class="form-control" id="presetName" placeholder="Preset Name">
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="submit" class="btn btn-default" onclick="savePreset()">Save</button>-->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="fontPreviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:40%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Font Preview</h4>
+                </div>
+                <div class="modal-body" id="" style="padding: 25px;">
+                    <p id="fontResponsiveness">The quick brown fox jumps over the lazy dog</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:50%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Success</h4>
+                </div>
+                <div class="modal-body" id="" style="padding: 25px;">
+
+                    <h3>Preset Saved Successfully</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function preview(argument) {
+            // Check if preview thumbnail already exist in DOM if does, remove it
+            // console.log($(".modal-body > canvas").length)
+            if ($(".modal-body > canvas").length >= 1) {
+                $("#modalCanvasContainer").empty();
+            }
+            // Remove the Border before making the CANVAS
+            for (i in widgetsSelected) {
+                console.log(widgetsSelected[i])
+                $("#" + widgetsSelected[i] + "2").css('border', '');
+                $("#" + widgetsSelected[i] + "2").css('background-color', '');
+            }
+            // Create the Canvas and append it to MODAL and apply CSS
+            html2canvas(document.querySelector("#inner-dropzone")).then(function (canvas) {
+                logging: false,
+                    $(".modal-dialog").css({ width: 70 + "%" });
+                $(canvas).css({ width: 100 + "%" });
+                $("#modalCanvasContainer").append(canvas);
+                // Add the Border after making the CANVAS
+                for (i in widgetsSelected) {
+                    console.log(widgetsSelected[i])
+                    if (widgetsSelected[i] != "timelineWidget") {
+                        $("#" + widgetsSelected[i] + "2").css('border', '1px solid white');
+                    }
+                }
+            });
+
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        //  Scripts to Add Fontsize option to dropdown menu and Colours DropDown
+        var fontDropDown = document.getElementById("fontDropDown");
+        for (fontSize in fontsizes) {
+            $(fontDropDown).append('<option value=' + fontsizes[fontSize] + '>' + fontsizes[fontSize] + '</option>');
+        }
+        var insertColourCode1 = document.getElementById("colourBase");
+        var insertColourCode2 = document.getElementById("colourCondition");
+        var insertColourCode3 = document.getElementById("colourTimeline");
+        var insertColourCode4 = document.getElementById("colourTeam");
+        var insertColourCode5 = document.getElementById("colourLocation");
+
+        //Get the colour Palette IDs to load all the Colour Values
+        var colourIDS = [insertColourCode1, insertColourCode2, insertColourCode3, insertColourCode4, insertColourCode5]
+        for (i in colourIDS) {
+            // Run a for loop against all the coloursCodes(Array) and add its value to each IDs
+            for (color in colourCodes) {
+                $(colourIDS[i]).append('<option value=' + colourCodes[color] + ' style="border-radius:2px;background-color:' + colourCodes[color] + ';"></option>');
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#homeNavButton").attr('disabled', true);
+            $("#logoutNavButton").attr('disabled', true);
+        });
+    </script>
+
+    <script type="text/javascript">
+        function resize() {
+            var element = document.getElementById("inner-dropzone");
+            // console.log(element)
+            var parent = element;
+            interact('.resize-drag')
+                .draggable({
+                    onmove: window.dragMoveListener,
+                    inertia: true,
+                    restrict: {
+                        restriction: element.parentNode,
+                        elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
+                        endOnly: true
+                    }
+                })
+                .resizable({
+                    // resize from all edges and corners
+                    preserveAspectRatio: true,
+                    edges: { left: false, right: true, bottom: true, top: false },
+
+                    // keep the edges inside the parent
+                    restrictEdges: {
+                        outer: parent,
+                        endOnly: true,
+                    },
+                    // minimum size
+                    restrictSize: {
+                        min: { width: 280, height: 70 },
+                    },
+                    inertia: true,
+                })
+                .on('resizemove', function (event) {
+                    var target = event.target,
+                        x = (parseFloat(target.getAttribute('data-x')) || 0),
+                        y = (parseFloat(target.getAttribute('data-y')) || 0);
+                    // update the element's style
+                    target.style.width = event.rect.width + 'px';
+                    target.style.height = event.rect.height + 'px';
+
+                    if ($("#notification2").width() < 275) {
+                        console.log("Aiyo")
+                        $("#notification2").removeClass("draggable");
+                    }
+                    // translate when resizing from top or left edges
+                    x += event.deltaRect.left;
+                    y += event.deltaRect.top;
+
+                    target.style.webkitTransform = target.style.transform =
+                        'translate(' + x + 'px,' + y + 'px)';
+
+                    target.setAttribute('data-x', x);
+                    target.setAttribute('data-y', y);
+                    // target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height);
+                });
+        }
+    </script>
+    <!-- ################# DROPZONE ############### -->
+    <script type="text/javascript">
+        interact('.dropzone').dropzone({
+            // dropzone only accept elements matching this CSS selector
+            // All the Interact JS functions are only fired if the selector is quoted here
+            accept: '#timelineWidget, #timelineWidget2, #clock , #clock2 ,  #welcomeText, #welcomeText2, #digitalClock, #digitalClock2,\
+		 	#notification, #notification2, #timelineButton, #timelineButton2, #conditionButton, #conditionButton2,\
+		 	#locationButton, #locationButton2 , #teamButton , #teamButton2, #locationWidget , #locationWidget2, #conditionWidget,\
+		 	#conditionWidget2, #teamWidget, #teamWidget2',
+
+            // Require a 75% element overlap for a drop to be possible
+            overlap: 0.75,
+
+            // listen for drop related events:
+
+            ondropactivate: function (event) {
+                // add active dropzone feedback
+                event.target.classList.add('drop-active');
+            },
+            ondragenter: function (event) {
+                var dropzoneElement = event.target;
+
+                // // feedback the possibility of a drop
+                // dropzoneElement.classList.add('drop-target');
+            },
+            ondragleave: function (event) {
+                // // remove the drop feedback style
+                var draggableElement = event.relatedTarget;
+
+                var width = $("#widgetpanel").width();
+
+                if (draggableElement.getAttribute('id') == "clock2") {
+                    uploadOriginalClock(width, draggableElement);
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "timelineWidget2") {
+                    uploadOriginalTimelineWidget(width, draggableElement)
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "conditionWidget2") {
+                    uploadOriginalConditionWidget(width, draggableElement)
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "locationWidget2") {
+                    uploadOriginalLocationWidget(width, draggableElement)
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "teamWidget2") {
+                    uploadOriginalTeamWidget(width, draggableElement)
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "welcomeText2") {
+                    uploadOriginalWelcomeText(width, draggableElement);
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "digitalClock2") {
+                    uploadOriginalDigitalClock(width, draggableElement);
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "notification2") {
+                    uploadOriginalNotification(width, draggableElement);
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "timelineButton2") {
+                    uploadOriginalTimelineButton(width, draggableElement);
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "conditionButton2") {
+                    uploadOriginalConditionButton(width, draggableElement);
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "locationButton2") {
+                    uploadOriginalLocationButton(width, draggableElement);
+                    updateSelectedWidgetArray(draggableElement);
+                }
+                if (draggableElement.getAttribute('id') == "teamButton2") {
+                    uploadOriginalTeamButton(width, draggableElement);
+                    updateSelectedWidgetArray(draggableElement);
+                }
+
+
+            },
+            // On drop is fired when clincian drags and drop the widget in dropzone
+            ondrop: function (event) {
+                $("#widgetpanel").removeClass('drop-target');
+                var draggableElement = event.relatedTarget;
+
+                draggableElement.classList.add("resize-drag");
+                draggableElement.classList.remove("draggable");
+                resize();
+
+                // Sameerul: Gets the id of the element ("In this case iD is "clock")
+                var id = draggableElement.getAttribute('id');
+                // Sameerul: Get Y position of the element from the dropzone
+                var yPos = $(document.getElementById(id)).offset().top - $('#inner-dropzone').offset().top;
+                // Sameerul: Get x position of the element from the dropzone
+                var xPos = $(document.getElementById(id)).offset().left - $('#inner-dropzone').offset().left;
+
+                if (draggableElement.getAttribute('id') == 'clock') {
+                    // this function loads the element passing yPos and xPos (Variable which loads and places the element correctly inside the dropzone)
+                    loadClock(yPos, xPos, draggableElement);
+                    // Call this function to update the array. Array which contains all the elements which are in dropzone
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "timelineWidget") {
+                    loadTimelineWidget(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "conditionWidget") {
+                    loadConditionWidget(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "locationWidget") {
+                    loadLocationWidget(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "teamWidget") {
+                    loadTeamWidget(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "welcomeText") {
+                    loadWelcomeText(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "digitalClock") {
+                    loadDigitalClock(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "notification") {
+                    loadNotification(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "timelineButton") {
+                    loadTimelineButton(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "conditionButton") {
+                    loadConditionButton(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "locationButton") {
+                    loadLocationButton(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+                if (draggableElement.getAttribute('id') == "teamButton") {
+                    loadTeamButton(yPos, xPos, draggableElement);
+                    updateSelectedWidgetsArray(draggableElement)
+                }
+
+            },
+            ondropdeactivate: function (event) {
+                // remove active dropzone feedback
+                event.target.classList.remove('drop-active');
+                event.target.classList.remove('drop-target');
+                var draggableElement = event.relatedTarget;
+
+
+            }
+        });
+    </script>
+
+    <script>
+        // < !--This script makes sure Navbar bg and text colour is adjusted-- >
+        $(".colourChange").change(function () {
+            var color = $("option:selected", this).attr("value");
+            var id = $(this).attr('id');
+            if (id === "colourBase") {
+                // if bg is White color
+                if (color === "#FFFFFF") {
+                    document.getElementById("homeNavButton").style.color = "black";
+                }
+                // if bg is black color
+                if (color === "#000000") {
+                    document.getElementById("homeNavButton").style.color = "white";
+                }
+            }
+            if (id === "colourCondition") {
+                if (color === "#FFFFFF") {
+                    document.getElementById("conditionNavButton").style.color = "black";
+                }
+                if (color === "#000000") {
+                    document.getElementById("conditionNavButton").style.color = "white";
+                }
+            }
+            if (id === "colourTimeline") {
+                if (color === "#FFFFFF") document.getElementById("timelineNavButton").style.color = "black";
+                if (color === "#000000") document.getElementById("timelineNavButton").style.color = "white";
+            }
+            if (id === "colourTeam") {
+                if (color === "#FFFFFF") document.getElementById("teamNavButton").style.color = "black";
+                if (color === "#000000") document.getElementById("teamNavButton").style.color = "white";
+            }
+            if (id === "colourLocation") {
+                if (color === "#FFFFFF") document.getElementById("locationNavButton").style.color = "black";
+                if (color === "#000000") document.getElementById("locationNavButton").style.color = "white";
+            }
+        });
+    </script>
+
+    <!--Patient NAVBAR CHECK/UNCHECK -->
+    <script type="text/javascript">
+
+        $(function () {
+            $('.button-checkbox').each(function () {
+
+                // Settings
+                var $widget = $(this),
+                    $button = $widget.find('button'),
+                    $checkbox = $widget.find('input:checkbox'),
+                    color = $button.data('color'),
+                    settings = {
+                        on: {
+                            icon: 'glyphicon glyphicon-check'
+                        },
+                        off: {
+                            icon: 'glyphicon glyphicon-unchecked'
+                        }
+                    };
+
+                // Event Handlers [make a temp array ]
+                $button.on('click', function () {
+                    $checkbox.prop('checked', !$checkbox.is(':checked'));
+                    $checkbox.triggerHandler('change');
+
+                    if ($checkbox.is(':checked')) {
+                        if (!isInArray($button.attr('id'), buttonIds)) {
+                            buttonIds.push($button.attr('id'));
+                        }
+                    }
+                    else {
+                        if (isInArray($button.attr('id'), buttonIds)) {
+                            var temp = buttonIds.indexOf($button.attr('id'));
+                            /*Delete the item from array if unchecked*/
+                            buttonIds.splice(temp, 1);
+                        }
+                    }
+                    // console.log(buttonIds);
+                    updateDisplay();
+                });
+                $checkbox.on('change', function () {
+                    updateDisplay();
+                });
+
+                // Actions
+                function updateDisplay() {
+                    var isChecked = $checkbox.is(':checked');
+
+                    // Set the button's state
+                    $button.data('state', (isChecked) ? "on" : "off");
+
+                    // Set the button's icon
+                    $button.find('.state-icon')
+                        .removeClass()
+                        .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+                    // Update the button's color
+                    if (isChecked) {
+                        $button
+                            .removeClass('btn-default')
+                            .addClass('btn-' + color + ' active');
+                    }
+                    else {
+                        $button
+                            .removeClass('btn-' + color + ' active')
+                            .addClass('btn-default');
+                    }
+                }
+
+                // Initialization
+                function init() {
+
+                    updateDisplay();
+
+                    // Inject the icon if applicable
+                    if ($button.find('.state-icon').length == 0) {
+                        $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+                    }
+                }
+                init();
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        function isInArray(value, array) {
+            return array.indexOf(value) > -1;
+        }
+    </script>
+
+    <script>
+        function toolT() {
+            $('[data-toggle="tooltip"]').tooltip();
+        };
+    </script>
+
+    <!--Steph add cheat mafies-->
+    <script>
+        var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.split('=');
+        $('#submitData').val(queryString[1]);
+    </script>
+    <script>
+        // Call this function to check IF this paitent already has customised Dashboard or not
+        var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.split('=');
+        console.log("patientID" + queryString[1]);
+        checkIfPatientAssignedWithDashboard(queryString[1]);
+    </script>
+</body>
+
+</html>
