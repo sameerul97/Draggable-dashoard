@@ -16,5 +16,5 @@ function setFont(argument) {
 	document.getElementById("fontResponsiveness").style.fontSize = $("#fontDropDown").val();
 
 
-    // $(".fontResponsiveness").css('font-size',$("#fontDropDown").val());
+	// $(".fontResponsiveness").css('font-size',$("#fontDropDown").val());
 }
