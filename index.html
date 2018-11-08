@@ -42,7 +42,9 @@
             border-bottom: 4px solid black;
             /*border-radius: 0px;*/
         }
-
+        .modalNavButton{
+            margin: 1px;
+        }
         body {
             margin: 0px;
             /*overflow-y:hidden;*/
@@ -257,7 +259,8 @@
         </div>
         <!-- Patient -->
         <div class="patientView " style=" width: 65%;float: left; padding: 0px 1px;">
-            <h3 style="text-align: center;width: 100%; padding: 10px; background-color: rebeccapurple;color:#fff;border-top-right-radius: 9px;border-top-left-radius: 9px;">Patien View</h3>
+            <h3 style="text-align: center;width: 100%; padding: 10px; background-color: rebeccapurple;color:#fff;border-top-right-radius: 9px;border-top-left-radius: 9px;">Patien
+                View</h3>
             <div class="patient_navbar" style="text-align: center;">
                 <span class="button-checkbox">
                     <button type="button" class="btn" data-color="primary" id="homeNavButton">Home</button>
@@ -353,6 +356,9 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Preview</h4>
                 </div>
+                <div class="modal-body" id="navButtonCanvasContainer">
+                    <!--CANVAS goes here-->
+                </div>
                 <div class="modal-body" id="modalCanvasContainer">
                     <!--CANVAS goes here-->
                 </div>
@@ -422,6 +428,7 @@
             // console.log($(".modal-body > canvas").length)
             if ($(".modal-body > canvas").length >= 1) {
                 $("#modalCanvasContainer").empty();
+                $("#navButtonCanvasContainer").empty();
             }
             // Remove the Border before making the CANVAS
             for (i in widgetsSelected) {
@@ -430,6 +437,30 @@
                 $("#" + widgetsSelected[i] + "2").css('background-color', '');
             }
             // Create the Canvas and append it to MODAL and apply CSS
+            for (i in buttonIds) {
+                if (buttonIds[i] === "conditionNavButton") {
+                    navbarTempData = "Condition";
+                }
+                if (buttonIds[i] === "timelineNavButton") {
+                    navbarTempData = "Timeline";
+                }
+                if (buttonIds[i] === "teamNavButton") {
+                    navbarTempData = "Team";
+                }
+                if (buttonIds[i] === "locationNavButton") {
+                    navbarTempData = "Location";
+                }
+                if (buttonIds[i] === "logoutNavButton") {
+                    navbarTempData = "Logout";
+                }
+                if (buttonIds[i] === "homeNavButton") {
+                    navbarTempData = "Home";
+                }
+                $("#navButtonCanvasContainer").append(
+                    '<button type="button" class="btn btn-primary modalNavButton" onclick="center()">' + navbarTempData + '</button>'
+                );
+            }
+            console.log(buttonIds);
             html2canvas(document.querySelector("#inner-dropzone")).then(function (canvas) {
                 logging: false,
                     $(".modal-dialog").css({ width: 70 + "%" });

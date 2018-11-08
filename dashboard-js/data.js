@@ -20,8 +20,8 @@ var colourCodes = ["#000000",
     "#0000FF",
     "#008080",
     "#00FFFF"];
-var fontsizes = ["xx-small" , "x-small" , "small" , "medium" ,"large" , "x-large" , "xx-large"]
+var fontsizes = ["xx-small", "x-small", "small", "medium", "large", "x-large", "xx-large"]
 
-var buttonIds = ["homeNavButton","logoutNavButton"];
+var buttonIds = ["homeNavButton", "logoutNavButton"];
 
 
