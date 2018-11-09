@@ -27,6 +27,6 @@ Widgets can be already assigned and the clinican might just want to update. Upon
 No, current version is simplied from the origional version due to privacy policy. Current version prints out log statements of the data which needs to be sent to backend. Log statements contains X and Y cordinates,widgets which are selected along with button and colours assigned with each button. 
 
 # Bugs
-When resizing widget buttons it comes unresponsive. Currently, enales doubt tap feature to that widgets which reloads the widget in exact position.  
+When resizing widget buttons it comes unresponsive. To overcome, enabled double tap feature to that widgets which reloads the widget to its initial size and places it in exact position.  
 
 # Demo : https://sameerul97.github.io/Draggable-dashoard.io/
